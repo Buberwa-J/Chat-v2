@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MessageSent;
-use App\Models\Messages;
 use App\Models\Room;
-use App\Models\UserRelations;
-use Illuminate\Console\Scheduling\Event;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use App\Models\UserRelations;
+use Illuminate\Support\Facades\Auth;
 
-class RoomController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -39,7 +36,7 @@ class RoomController extends Controller
             }
         }
         //dd($myPrivateRooms, $myPublicRooms);
-        return Inertia::render('Room/AllRooms', compact('myPublicRooms', 'myPrivateRooms'));
+        return Inertia::render('Dashboard', compact('myPublicRooms', 'myPrivateRooms'));
     }
 
     /**
@@ -48,24 +45,6 @@ class RoomController extends Controller
     public function create()
     {
         //
-    }
-
-
-    // Send a message
-    public function sendMessage(Request $request, Room $room)
-    {
-        $user = Auth::user();
-
-        $request->validate([
-            'content' => 'required|max:255',
-        ]);
-
-        $newMessage = Messages::create([
-            'content' => $request->content,
-            'sender_id' => $user->id,
-            'room_id' => $room->id
-        ]);
-        broadcast(new MessageSent($newMessage))->toOthers();
     }
 
     /**
@@ -79,22 +58,15 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Room $room)
+    public function show(string $id)
     {
-        $user = Auth::user();
-        $roomId = $room->id;
-        $messages = Messages::where('room_id', $roomId)
-            ->orderBy('created_at', 'asc')
-            ->get();
-
-
-        return Inertia::render('Dashboard', compact('messages', 'user', 'roomId'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Room $room)
+    public function edit(string $id)
     {
         //
     }
@@ -102,7 +74,7 @@ class RoomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Room $room)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -110,7 +82,7 @@ class RoomController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Room $room)
+    public function destroy(string $id)
     {
         //
     }

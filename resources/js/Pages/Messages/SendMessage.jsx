@@ -10,16 +10,21 @@ export default function SendMessage({onNewMessage, roomId, userId}) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         if (formData.content.trim() === "") {
             return;
         }
-        Inertia.post(route('room.sendMessage', roomId), formData);
-
-        onNewMessage({
-            content: formData.content,
-            sender_id: userId
+        Inertia.post(route("room.sendMessage", roomId), formData, {
+            preserveState: true,
+            preserveScroll: true
+        }).then(() => {
+            onNewMessage({
+                content: formData.content,
+                sender_id: userId,
+            });
+            setFormData({ content: "" });
         });
-        setFormData({ content: '' });
+        
     }
 
     return (
