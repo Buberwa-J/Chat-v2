@@ -35,7 +35,7 @@ class DashboardController extends Controller
                     $myPublicRooms->push($room);
             }
         }
-        //dd($myPrivateRooms, $myPublicRooms);
+        // dd($myPrivateRooms, $myPublicRooms);
         return Inertia::render('Dashboard', compact('myPublicRooms', 'myPrivateRooms'));
     }
 
