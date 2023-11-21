@@ -18,28 +18,6 @@ class RoomController extends Controller
      */
     public function index()
     {
-
-        $user = Auth::user();
-        $myRelations = UserRelations::where('user_id', $user->id)
-            ->get();
-
-        $myPublicRooms = collect();
-        $myPrivateRooms = collect();
-        if ($myRelations) {
-            foreach ($myRelations as $relation) {
-                $room = Room::where('id', $relation->room_id)
-                    ->with('users')
-                    ->first();
-                if ($room->room_type === 'private') {
-                    $otherUser = $room->users->firstWhere('id', '!=', $user->id);
-                    $room->room_name = $otherUser->name;
-                    $myPrivateRooms->push($room);
-                } else
-                    $myPublicRooms->push($room);
-            }
-        }
-        //dd($myPrivateRooms, $myPublicRooms);
-        return Inertia::render('Room/AllRooms', compact('myPublicRooms', 'myPrivateRooms'));
     }
 
     /**
@@ -81,14 +59,6 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        $user = Auth::user();
-        $roomId = $room->id;
-        $messages = Messages::where('room_id', $roomId)
-            ->orderBy('created_at', 'asc')
-            ->get();
-
-
-        return Inertia::render('Dashboard', compact('messages', 'user', 'roomId'));
     }
 
     /**

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Inertia } from "@inertiajs/inertia";
-import { Head, Link } from "@inertiajs/react";
 import SendMessage from "./SendMessage";
-export default function ChatWindow({ roomId, roomName, userId }) {
-    const [messages, setMessages] = useState([]);
+
+export default function ChatWindow({ roomId, userId, initialMessages }) {
+    const [messages, setMessages] = useState(initialMessages);
 
     useEffect(() => {
         const messageListener = (e) => {
@@ -18,26 +17,26 @@ export default function ChatWindow({ roomId, roomName, userId }) {
         };
     }, [roomId]);
 
+    const handleNewMessage = (newMessage) => {
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+    };
+
     return (
-        <>
-            <p className="text-black">Inside Room:{roomId}</p>
-            <div className="space-y-2 mx-auto max-w-lg my-12">
-                
-                {messages &&
-                    messages.map((message, index) => (
-                        <div
-                            key={index}
-                            className={`p-2 rounded-md max-w-2/3 ${
-                                message.sender_id === userId
-                                    ? "ml-auto bg-blue-500 text-white"
-                                    : "mr-auto bg-gray-300 text-black"
-                            }`}
-                        >
-                            {message.content} {message.sender_id}
-                        </div>
-                    ))}
-                <SendMessage roomId={roomId} userId={userId} />
-            </div>
-        </>
+        <div className="space-y-2 mx-auto max-w-lg my-12">
+            {messages &&
+                messages.map((message, index) => (
+                    <div
+                        key={index}
+                        className={`p-2 rounded-md max-w-2/3 ${
+                            message.sender_id === userId
+                                ? "ml-auto bg-blue-500 text-white"
+                                : "mr-auto bg-gray-300 text-black"
+                        }`}
+                    >
+                        {message.content} {message.sender_id}
+                    </div>
+                ))}
+            <SendMessage roomId={roomId} userId={userId} updateMessages={handleNewMessage} />
+        </div>
     );
 }

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Head } from '@inertiajs/react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ChatWindow from './Messages/ChatWindow';
 
-export default function Dashboard({ user,myPrivateRooms, myPublicRooms }) {
+export default function Dashboard({ user, myPrivateRooms, myPublicRooms }) {
     const [selectedRoom, setSelectedRoom] = useState(null);
 
     const handleRoomItemClicked = (room) => {
@@ -10,7 +11,7 @@ export default function Dashboard({ user,myPrivateRooms, myPublicRooms }) {
     };
 
     return (
-        <>
+        <AuthenticatedLayout user={user}>
             <Head title="Home" />
             <div className='flex h-screen'>
                 {/* Left Bar */}
@@ -24,7 +25,9 @@ export default function Dashboard({ user,myPrivateRooms, myPublicRooms }) {
                                 <div
                                     key={room.id}
                                     onClick={() => handleRoomItemClicked(room)}
-                                    className="room-item cursor-pointer p-2 rounded-md hover:bg-blue-600 text-white"
+                                    className={`room-item cursor-pointer p-2 rounded-md hover:bg-blue-600 text-white ${
+                                        selectedRoom && selectedRoom.id === room.id ? 'bg-blue-600' : ''
+                                    }`}
                                 >
                                     {room.room_name}
                                 </div>
@@ -41,7 +44,9 @@ export default function Dashboard({ user,myPrivateRooms, myPublicRooms }) {
                                 <div
                                     key={room.id}
                                     onClick={() => handleRoomItemClicked(room)}
-                                    className="room-item cursor-pointer p-2 rounded-md hover:bg-blue-600 text-white"
+                                    className={`room-item cursor-pointer p-2 rounded-md hover:bg-blue-600 text-white ${
+                                        selectedRoom && selectedRoom.id === room.id ? 'bg-blue-600' : ''
+                                    }`}
                                 >
                                     {room.room_name}
                                 </div>
@@ -57,12 +62,12 @@ export default function Dashboard({ user,myPrivateRooms, myPublicRooms }) {
                     {selectedRoom && (
                         <ChatWindow
                             roomId={selectedRoom.id}
-                            roomName={selectedRoom.room_name}
-                            userId={user}
+                            userId={user.id}
+                            initialMessages={selectedRoom.messages}
                         />
                     )}
                 </div>
             </div>
-        </>
+        </AuthenticatedLayout>
     );
 }
