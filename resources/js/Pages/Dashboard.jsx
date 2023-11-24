@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Head } from '@inertiajs/react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ChatWindow from './Messages/ChatWindow';
 
 export default function Dashboard({ user, myPrivateRooms, myPublicRooms }) {
@@ -9,9 +8,12 @@ export default function Dashboard({ user, myPrivateRooms, myPublicRooms }) {
     const handleRoomItemClicked = (room) => {
         setSelectedRoom(room);
     };
+    useEffect(() => {
+        console.log('Dashboard component re-rendered'); 
+    });
 
     return (
-        <AuthenticatedLayout user={user}>
+        <>
             <Head title="Home" />
             <div className='flex h-screen'>
                 {/* Left Bar */}
@@ -68,6 +70,5 @@ export default function Dashboard({ user, myPrivateRooms, myPublicRooms }) {
                     )}
                 </div>
             </div>
-        </AuthenticatedLayout>
-    );
+</>    );
 }

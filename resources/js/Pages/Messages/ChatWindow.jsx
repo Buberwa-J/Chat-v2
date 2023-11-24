@@ -6,19 +6,19 @@ export default function ChatWindow({ roomId, userId, initialMessages }) {
 
     useEffect(() => {
         const messageListener = (e) => {
-            const receivedMessage = e.message;
+            const receivedMessage = e.message;      // for incoming messages 
             setMessages((prevMessages) => [...prevMessages, receivedMessage]);
         };
 
         window.Echo.channel(`chat-room.${roomId}`).listen('MessageSent', messageListener);
-
+              // after the components unmounts
         return () => {
             window.Echo.channel(`chat-room.${roomId}`).stopListening('MessageSent', messageListener);
         };
     }, [roomId]);
 
     const handleNewMessage = (newMessage) => {
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        setMessages((prevMessages) => [...prevMessages, newMessage]);      // for outgoing messages
     };
 
     return (

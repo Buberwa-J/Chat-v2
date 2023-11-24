@@ -1,29 +1,32 @@
 import React, { useState } from "react";
-import { Inertia } from '@inertiajs/inertia';
+import axios from 'axios';
+import { Inertia } from "@inertiajs/inertia";
 
 export default function SendMessage({ roomId, userId, updateMessages }) {
     const [formData, setFormData] = useState({
         'content': '',
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (formData.content.trim() === "") {
             return;
         }
 
-        Inertia.post(route("room.sendMessage", roomId), formData, {
-            preserveState: true,
-            preserveScroll: true
-        }).then(() => {
+        try {
+            const response = await axios.post(route("room.sendMessage", roomId), formData);
+
             const newMessage = {
                 content: formData.content,
                 sender_id: userId,
             };
+
             updateMessages(newMessage);
             setFormData({ content: "" });
-        });
+        } catch (error) {
+            console.error('Error sending message:', error);
+        }
     }
 
     return (
