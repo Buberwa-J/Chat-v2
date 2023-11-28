@@ -25,7 +25,7 @@ class DashboardController extends Controller
         if ($myRelations) {
             foreach ($myRelations as $relation) {
                 $room = Room::where('id', $relation->room_id)
-                    ->with('users', 'messages')
+                    ->with('users', 'messages', 'latestMessage')
                     ->first();
 
                 if ($room->room_type === 'private') {
@@ -37,7 +37,7 @@ class DashboardController extends Controller
                 }
             }
         }
-
+        //dd($myPrivateRooms, $myPublicRooms);
         return Inertia::render('Dashboard', compact('myPublicRooms', 'myPrivateRooms', 'user'));
     }
 

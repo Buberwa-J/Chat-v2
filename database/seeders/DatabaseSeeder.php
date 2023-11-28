@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
         $users = User::all();
-
+        $user14 = User::findOrFail(14);
         // Create the friendships
         foreach ($users as $user) {
             $count = 0;
@@ -68,25 +68,63 @@ class DatabaseSeeder extends Seeder
         }
 
         // Create the rooms
-        for ($i = 1; $i < 51; $i++) {
+        for ($i = 1; $i < 56; $i++) {
             //Create Private Rooms
             if ($i <= 40) {
                 Room::create([
                     'room_name' => fake()->word() . ' ' . fake()->word(),
                     'room_type' => 'private',
                 ]);
-                //Create Public Rooms
-            } else {
+            }
+            // create rooms for user 14
+            elseif ($i > 50) {
+                Room::create([
+                    'room_name' => fake()->word() . ' ' . fake()->word(),
+                    'room_type' => 'private'
+                ]);
+            }
+
+            //Create Public Rooms
+            else {
                 Room::create([
                     'room_name' => fake()->word() . ' ' . fake()->word(),
                     'room_type' => 'public'
                 ]);
             }
         }
-
         // Create the user relations 
         $AllPublicRooms = Room::where('room_type', 'public')->get();
-        $AllPrivateRooms = Room::where('room_type', 'private')->get();
+        $AllPrivateRooms = Room::where('room_type', 'private')
+            ->where('id', '<=', 40)
+            ->get();
+        $AllUser14Rooms = Room::where('id', '>', 50)->get();
+
+        // Create the user relations for user14' (for front end visualization)
+        foreach ($AllUser14Rooms as $room) {
+            $counter = 0;
+            while ($counter < 2) {
+
+                if ($counter < 1)
+                    $RandomUserId = $user14->id;
+
+                else
+                    $RandomUserId = rand(1, 100);
+
+                $UserRelationExists = UserRelations::where([
+                    ['user_id',  '=', $RandomUserId],
+                    ['room_id', '=', $room->id]
+                ])->exists();
+
+                if (!$UserRelationExists) {
+                    UserRelations::create([
+                        'user_id' => $RandomUserId,
+                        'room_id' => $room->id
+                    ]);
+                    $counter++;
+                }
+            }
+        }
+
         foreach ($AllPrivateRooms as $room) {
             $counter = 0;
             while ($counter < 2) {
@@ -109,7 +147,13 @@ class DatabaseSeeder extends Seeder
         foreach ($AllPublicRooms as $room) {
             $counter = 0;
             while ($counter < 5) {
-                $RandomUserId = rand(1, 100);
+
+                if ($counter == 4)
+                    $RandomUserId = $user14->id;
+
+                else
+                    $RandomUserId = rand(1, 100);
+
                 $UserRelationExists = UserRelations::where([
                     ['user_id',  '=', $RandomUserId],
                     ['room_id', '=', $room->id]
