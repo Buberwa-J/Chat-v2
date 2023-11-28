@@ -146,7 +146,6 @@ export default function Dashboard({ user, myPrivateRooms, myPublicRooms }) {
                             key={selectedRoom.id}
                             roomId={selectedRoom.id}
                             userId={user.id}
-                            initialMessages={selectedRoom.messages}
                         />
                     )}
                 </div>

@@ -1,11 +1,25 @@
 import React, { useState, useEffect, useRef } from "react";
 import SendMessage from "./SendMessage";
 
-const ChatWindow = ({ roomId, userId, initialMessages }) => {
-    const [messages, setMessages] = useState(initialMessages);
+const ChatWindow = ({ roomId, userId }) => {
+    const [messages, setMessages] = useState([]);
     const chatContainerRef = useRef(null);
-    console.log("rendering messages from room with ID: " + roomId);
+
     useEffect(() => {
+        const fetchMessages = async () => {
+            try {
+                const response = await fetch(`/api/rooms/${roomId}`);
+                const data = await response.json();
+                setMessages(data.messages);
+            } catch (error) {
+                console.error("Error fetching messages:", error);
+            }
+        };
+        fetchMessages();
+    }, [roomId]);
+
+    useEffect(() => {
+        console.log(messages);
         const messageListener = (e) => {
             const receivedMessage = e.message;
             setMessages((prevMessages) => [...prevMessages, receivedMessage]);

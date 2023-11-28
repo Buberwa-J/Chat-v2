@@ -71,13 +71,11 @@ Route::middleware('auth')->group(function () {
     Route::get('rooms/show', [RoomController::class, 'index'])
         ->name('rooms.show');
 
-    Route::get('messages/show', [MessagesController::class, 'index'])
-        ->name('messages.show');
-
     // GET A SPECIFIC RESOURCE
     Route::get('room/{room}', [RoomController::class, 'show'])
         ->name('room.instance');
 
+    Route::get('/api/rooms/{roomId}', [MessagesController::class, 'getMessagesByRoom']);
 
     //CREATE A RESOURCE (THE FORM)
     Route::get('create/message', [MessagesController::class, 'create'])

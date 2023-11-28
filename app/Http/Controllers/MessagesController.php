@@ -14,13 +14,14 @@ class MessagesController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index()
+    public function getMessagesByRoom($roomId)
     {
         $user = Auth::user();
-        $myMessages = Messages::where('sender_id', $user->id)
+        $myMessages = Messages::where('room_id', $roomId)
             ->orderBy('created_at', 'asc')
             ->get();
-        return Inertia::render('Messages/Outgoing', compact('myMessages'));
+
+        return response()->json(['messages' => $myMessages]);
     }
 
     /**

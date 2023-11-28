@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Messages;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Room extends Model
 {
@@ -17,6 +18,11 @@ class Room extends Model
     public function messages()
     {
         return $this->hasMany(Messages::class);
+    }
+
+    public function latestMessage()
+    {
+        return $this->hasOne(Messages::class)->latest('created_at');
     }
 
     public function users()

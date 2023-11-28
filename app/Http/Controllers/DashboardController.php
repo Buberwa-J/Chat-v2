@@ -25,7 +25,7 @@ class DashboardController extends Controller
         if ($myRelations) {
             foreach ($myRelations as $relation) {
                 $room = Room::where('id', $relation->room_id)
-                    ->with('users', 'messages', 'latestMessage')
+                    ->with('users')
                     ->first();
 
                 if ($room->room_type === 'private') {
