@@ -19,7 +19,6 @@ const ChatWindow = ({ roomId, userId }) => {
     }, [roomId]);
 
     useEffect(() => {
-        console.log(messages);
         const messageListener = (e) => {
             const receivedMessage = e.message;
             setMessages((prevMessages) => [...prevMessages, receivedMessage]);

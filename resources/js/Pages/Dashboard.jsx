@@ -33,6 +33,70 @@ export default function Dashboard({ user, myPrivateRooms, myPublicRooms }) {
                         </div>
                     </div>
 
+                    {/* Divider */}
+                    <div className="border-t my-4 border-gray-300"></div>
+
+                    {/* Settings Panel */}
+                    <div
+                        id="settings panel"
+                        className="px-2 justify-end mb-3 flex max-h-full space-x-4"
+                    >
+                        <form method="GET">
+                            <div className="relative text-blue-600 focus-within:text-blue-400 mr-2">
+                                <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+                                    <button
+                                        type="submit"
+                                        className="p-1 focus:outline-none focus:shadow-outline"
+                                    >
+                                        <svg
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            viewBox="0 0 24 24"
+                                            className="w-8 h-6"
+                                        >
+                                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                        </svg>
+                                    </button>
+                                </span>
+                                <input
+                                    type="search"
+                                    name="q"
+                                    className="py-2 text-sm text-white rounded-md pl-10 focus:outline-none focus:bg-white focus:text-blue-500"
+                                    placeholder="Search..."
+                                    autoComplete="off"
+                                />
+                            </div>
+                        </form>
+
+                        <img
+                            id="add-friend-icon"
+                            src="add-friend.png"
+                            alt="add friend"
+                            className="h-10 w-10 hover:scale-125 duration-300"
+                        />
+                        <img
+                            id="add-friend-icon"
+                            src="new-message.png"
+                            alt="add friend"
+                            className="h-10 w-10 hover:scale-125 duration-300"
+                        />
+                        <img
+                            id="add-friend-icon"
+                            src="add-group.png"
+                            alt="add friend"
+                            className="h-10 w-10 hover:scale-125 duration-300"
+                        />
+                        <img
+                            id="settings-icon"
+                            src="settings.png"
+                            alt="settings"
+                            className="h-10 w-10 hover:scale-125 duration-300"
+                        />
+                    </div>
+
                     {/* Private Rooms Section */}
                     <div>
                         {myPrivateRooms && myPrivateRooms.length > 0 ? (
@@ -46,7 +110,7 @@ export default function Dashboard({ user, myPrivateRooms, myPublicRooms }) {
                                         onClick={() =>
                                             handleRoomItemClicked(room)
                                         }
-                                        className="flex p-3 cursor-pointer hover:bg-gray-400 hover:scale-105 duration-300 rounded-sm border-gray-500"
+                                        className="flex p-3 cursor-pointer hover:bg-gray-300 hover:scale-105 duration-300 rounded-sm border-gray-500"
                                     >
                                         <div
                                             id="rooms-container"
@@ -97,7 +161,7 @@ export default function Dashboard({ user, myPrivateRooms, myPublicRooms }) {
                                         onClick={() =>
                                             handleRoomItemClicked(room)
                                         }
-                                        className={`flex p-3 cursor-pointer hover:bg-blue-600 
+                                        className={`flex p-3 cursor-pointer hover:bg-gray-300 hover:scale-105 duration-300 
                                         ${
                                             selectedRoom &&
                                             selectedRoom.id === room.id
